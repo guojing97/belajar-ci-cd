@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧪 Tester Pro</title>
+
+    <!-- ========== CSS MURNI ========== -->
+    <style>
+        /* ----- reset & variabel ----- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-body: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-input: #f8fafc;
+            --bg-btn: #3b82f6;
+            --bg-btn-hover: #2563eb;
+            --bg-btn-danger: #ef4444;
+            --bg-btn-danger-hover: #dc2626;
+            --bg-btn-success: #22c55e;
+            --bg-btn-success-hover: #16a34a;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: 0.25s ease;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* tema gelap */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+            transition: background var(--transition), color var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* ----- container utama ----- */
+        .app {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ----- header ----- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header h1 span {
+            background: var(--bg-btn);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 40px;
+            letter-spacing: 0.3px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ----- tombol toggle tema ----- */
+        .theme-toggle {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: background var(--transition), border var(--transition),
+                color var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-color);
+        }
+
+        /* ----- grid kartu ----- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* ----- kartu ----- */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: background var(--transition), box-shadow var(--transition),
+                transform 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            border-color: var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+        }
+
+        .card-title .badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 40px;
+            background: var(--bg-btn);
+            color: #fff;
+        }
+
+        /* ----- elemen form ----- */
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: border var(--transition), box-shadow var(--transition),
+                background var(--transition);
+            font-family: var(--font);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--bg-btn);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ----- tombol ----- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 22px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background var(--transition), transform 0.15s,
+                box-shadow var(--transition);
+            background: var(--bg-btn);
+            color: #fff;
+            font-family: var(--font);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--bg-btn);
+        }
+        .btn-primary:hover {
+            background: var(--bg-btn-hover);
+        }
+
+        .btn-success {
+            background: var(--bg-btn-success);
+        }
+        .btn-success:hover {
+            background: var(--bg-btn-success-hover);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn-danger {
+            background: var(--bg-btn-danger);
+        }
+        .btn-danger:hover {
+            background: var(--bg-btn-danger-hover);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .btn-outline:hover {
+            background: var(--border-color);
+            box-shadow: none;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.8rem;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        /* ----- output / log ----- */
+        .output-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            margin-top: 14px;
+            font-family: 'Menlo', 'Consolas', monospace;
+            font-size: 0.85rem;
+            min-height: 50px;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            transition: background var(--transition), border var(--transition);
+            word-break: break-word;
+            line-height: 1.6;
+        }
+
+        .output-box.success {
+            border-color: var(--bg-btn-success);
+            color: var(--bg-btn-success);
+        }
+        .output-box.error {
+            border-color: var(--bg-btn-danger);
+            color: var(--bg-btn-danger);
+        }
+        .output-box.info {
+            border-color: var(--bg-btn);
+            color: var(--bg-btn);
+        }
+
+        /* ----- tester API (simulasi) ----- */
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .api-status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: background 0.3s;
+            display: inline-block;
+        }
+        .api-status .dot.online {
+            background: var(--bg-btn-success);
+        }
+        .api-status .dot.offline {
+            background: var(--bg-btn-danger);
+        }
+        .api-status .dot.loading {
+            background: #f59e0b;
+            animation: pulse 0.8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.4;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+
+        /* ----- counter ----- */
+        .counter-display {
+            font-size: 2.4rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 8px 0 4px;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        /* ----- checkbox & radio styling ----- */
+        .check-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 6px 0 2px;
+        }
+
+        .check-group label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 400;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .check-group input[type="checkbox"],
+        .check-group input[type="radio"] {
+            width: auto;
+            accent-color: var(--bg-btn);
+            cursor: pointer;
+        }
+
+        /* ----- footer ----- */
+        .footer {
+            text-align: center;
+            padding: 24px 0 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 16px;
+            transition: border var(--transition);
+        }
+
+        /* ----- responsif ----- */
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .header-actions {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .counter-display {
+                font-size: 2rem;
+            }
+        }
+
+        /* utility */
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .w-full {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <h1>
+                🧪 Tester Pro
+                <span>v1.0</span>
+            </h1>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle tema">
+                    🌙 <span id="themeLabel">Gelap</span>
+                </button>
+                <button class="btn btn-outline btn-sm" id="resetAllBtn">↻ Reset Semua</button>
+            </div>
+        </header>
+
+        <!-- ===== GRID KARTU ===== -->
+        <div class="grid">
+
+            <!-- KARTU 1: Input & Tampilan -->
+            <div class="card">
+                <div class="card-title">
+                    📝 Input Tester
+                    <span class="badge">live</span>
+                </div>
+                <div class="form-group">
+                    <label for="textInput">Ketik sesuatu</label>
+                    <input type="text" id="textInput" placeholder="Tulis pesan..." />
+                </div>
+                <div class="form-group">
+                    <label for="textArea">Area teks</label>
+                    <textarea id="textArea" placeholder="Tulis catatan..."></textarea>
+                </div>
+                <button class="btn btn-primary btn-block" id="showInputBtn">🔍 Tampilkan</button>
+                <div class="output-box" id="inputOutput">⌨️ Hasil akan muncul di sini</div>
+            </div>
+
+            <!-- KARTU 2: Counter -->
+            <div class="card">
+                <div class="card-title">
+                    🔢 Counter
+                    <span class="badge">state</span>
+                </div>
+                <div class="counter-display" id="counterDisplay">0</div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="counterInc">➕ Tambah</button>
+                    <button class="btn btn-danger" id="counterDec">➖ Kurang</button>
+                    <button class="btn btn-outline" id="counterReset">↺ Reset</button>
+                </div>
+                <div class="output-box" id="counterLog">ℹ️ Klik tombol untuk mengubah</div>
+            </div>
+
+            <!-- KARTU 3: Checkbox / Radio -->
+            <div class="card">
+                <div class="card-title">
+                    ☑️ Pilihan
+                    <span class="badge">status</span>
+                </div>
+                <div class="form-group">
+                    <label>Hobi:</label>
+                    <div class="check-group" id="hobbyGroup">
+                        <label><input type="checkbox" value="coding" /> Coding</label>
+                        <label><input type="checkbox" value="music" /> Musik</label>
+                        <label><input type="checkbox" value="sport" /> Olahraga</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Jenis kelamin:</label>
+                    <div class="check-group" id="genderGroup">
+                        <label><input type="radio" name="gender" value="pria" /> Pria</label>
+                        <label><input type="radio" name="gender" value="wanita" /> Wanita</label>
+                        <label><input type="radio" name="gender" value="lain" /> Lain</label>
+                    </div>
+                </div>
+                <button class="btn btn-success btn-block" id="checkStatusBtn">📋 Cek Status</button>
+                <div class="output-box" id="checkOutput">⏳ Belum dicek</div>
+            </div>
+
+            <!-- KARTU 4: Simulasi API -->
+            <div class="card">
+                <div class="card-title">
+                    🌐 API Simulasi
+                    <span class="badge">async</span>
+                </div>
+                <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:12px;">
+                    Panggil endpoint palsu dengan delay 1,5 detik.
+                </p>
+                <button class="btn btn-primary btn-block" id="apiCallBtn">🚀 Panggil API</button>
+                <div class="api-status">
+                    <span class="dot" id="apiDot"></span>
+                    <span id="apiStatusText">Siap</span>
+                </div>
+                <div class="output-box" id="apiOutput">📡 Klik tombol untuk uji coba</div>
+            </div>
+
+            <!-- KARTU 5: Warna & Tema -->
+            <div class="card">
+                <div class="card-title">
+                    🎨 Gaya & Tema
+                    <span class="badge">ui</span>
+                </div>
+                <div class="form-group">
+                    <label for="colorPicker">Pilih warna aksen:</label>
+                    <input type="color" id="colorPicker" value="#3b82f6" style="padding:4px; height:44px;" />
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline" id="applyColorBtn">🎯 Terapkan</button>
+                    <button class="btn btn-outline" id="resetColorBtn">↺ Reset</button>
+                </div>
+                <div class="output-box" id="colorOutput">🎨 Warna default</div>
+            </div>
+
+            <!-- KARTU 6: Validasi -->
+            <div class="card">
+                <div class="card-title">
+                    ✅ Validasi
+                    <span class="badge">form</span>
+                </div>
+                <div class="form-group">
+                    <label for="emailInput">Email</label>
+                    <input type="email" id="emailInput" placeholder="contoh@email.com" />
+                </div>
+                <div class="form-group">
+                    <label for="ageInput">Usia (18–99)</label>
+                    <input type="number" id="ageInput" placeholder="25" min="18" max="99" />
+                </div>
+                <button class="btn btn-success btn-block" id="validateBtn">✅ Validasi</button>
+                <div class="output-box" id="validateOutput">📋 Isi data lalu klik validasi</div>
+            </div>
+
+        </div><!-- /grid -->
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            🧪 Tester Pro &mdash; dibangun dengan HTML, CSS murni, dan JavaScript vanilla.
+            <br style="display:block; margin-top:4px;" />
+            <span id="timestamp"></span>
+        </footer>
+
+    </div><!-- /app -->
+
+
+    <!-- ========== JAVASCRIPT MURNI ========== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- refs -----
+            const $ = (sel) => document.querySelector(sel);
+            const $$ = (sel) => document.querySelectorAll(sel);
+
+            // ----- DOM elemen -----
+            const themeToggle = $('#themeToggle');
+            const themeLabel = $('#themeLabel');
+            const resetAllBtn = $('#resetAllBtn');
+
+            // input card
+            const textInput = $('#textInput');
+            const textArea = $('#textArea');
+            const showInputBtn = $('#showInputBtn');
+            const inputOutput = $('#inputOutput');
+
+            // counter
+            const counterDisplay = $('#counterDisplay');
+            const counterInc = $('#counterInc');
+            const counterDec = $('#counterDec');
+            const counterReset = $('#counterReset');
+            const counterLog = $('#counterLog');
+
+            // check
+            const checkStatusBtn = $('#checkStatusBtn');
+            const checkOutput = $('#checkOutput');
+            const hobbyGroup = $('#hobbyGroup');
+            const genderGroup = $('#genderGroup');
+
+            // api
+            const apiCallBtn = $('#apiCallBtn');
+            const apiDot = $('#apiDot');
+            const apiStatusText = $('#apiStatusText');
+            const apiOutput = $('#apiOutput');
+
+            // color
+            const colorPicker = $('#colorPicker');
+            const applyColorBtn = $('#applyColorBtn');
+            const resetColorBtn = $('#resetColorBtn');
+            const colorOutput = $('#colorOutput');
+
+            // validate
+            const emailInput = $('#emailInput');
+            const ageInput = $('#ageInput');
+            const validateBtn = $('#validateBtn');
+            const validateOutput = $('#validateOutput');
+
+            const timestamp = $('#timestamp');
+
+            // ----- state -----
+            let counter = 0;
+            let currentTheme = 'light'; // 'light' | 'dark'
+
+            // ----- helpers -----
+            function setOutput(el, msg, type) {
+                el.textContent = msg;
+                el.className = 'output-box';
+                if (type) el.classList.add(type);
+            }
+
+            function setCounterLog(msg, type) {
+                setOutput(counterLog, msg, type);
+            }
+
+            function updateCounterDisplay() {
+                counterDisplay.textContent = counter;
+            }
+
+            function getSelectedCheckboxes(group) {
+                const checks = group.querySelectorAll('input[type="checkbox"]:checked');
+                return Array.from(checks).map(cb => cb.value);
+            }
+
+            function getSelectedRadio(group) {
+                const checked = group.querySelector('input[type="radio"]:checked');
+                return checked ? checked.value : null;
+            }
+
+            // ----- tema -----
+            function setTheme(theme) {
+                currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
+                themeLabel.textContent = theme === 'dark' ? 'Terang' : 'Gelap';
+                themeToggle.innerHTML = theme === 'dark' ? '☀️ <span id="themeLabel">Terang</span>' :
+                    '🌙 <span id="themeLabel">Gelap</span>';
+                // re-bind themeLabel because innerHTML replaced it
+                document.getElementById('themeLabel') && (themeLabel.textContent = theme === 'dark' ? 'Terang' : 'Gelap');
+                localStorage.setItem('tester-theme', theme);
+            }
+
+            function toggleTheme() {
+                setTheme(currentTheme === 'light' ? 'dark' : 'light');
+            }
+
+            function loadTheme() {
+                const saved = localStorage.getItem('tester-theme') || 'light';
+                setTheme(saved);
+            }
+
+            // ----- reset semua -----
+            function resetAll() {
+                // input
+                textInput.value = '';
+                textArea.value = '';
+                setOutput(inputOutput, '⌨️ Hasil akan muncul di sini');
+
+                // counter
+                counter = 0;
+                updateCounterDisplay();
+                setCounterLog('ℹ️ Klik tombol untuk mengubah');
+
+                // check
+                hobbyGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                genderGroup.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+                setOutput(checkOutput, '⏳ Belum dicek');
+
+                // api
+                apiDot.className = 'dot';
+                apiStatusText.textContent = 'Siap';
+                setOutput(apiOutput, '📡 Klik tombol untuk uji coba');
+
+                // color
+                colorPicker.value = '#3b82f6';
+                document.documentElement.style.setProperty('--bg-btn', '#3b82f6');
+                document.documentElement.style.setProperty('--bg-btn-hover', '#2563eb');
+                setOutput(colorOutput, '🎨 Warna default');
+
+                // validate
+                emailInput.value = '';
+                ageInput.value = '';
+                setOutput(validateOutput, '📋 Isi data lalu klik validasi');
+
+                // timestamp
+                updateTimestamp();
+            }
+
+            function updateTimestamp() {
+                const now = new Date();
+                timestamp.textContent = '🕒 ' + now.toLocaleString('id-ID');
+            }
+
+            // ----- event: input card -----
+            showInputBtn.addEventListener('click', function() {
+                const text = textInput.value.trim() || '(kosong)';
+                const area = textArea.value.trim() || '(kosong)';
+                setOutput(inputOutput, `📌 Teks: "${text}"\n📝 Catatan: "${area}"`, 'info');
+            });
+
+            // ----- event: counter -----
+            counterInc.addEventListener('click', function() {
+                counter++;
+                updateCounterDisplay();
+                setCounterLog(`➕ Ditambah → ${counter}`, 'success');
+            });
+
+            counterDec.addEventListener('click', function() {
+                counter--;
+                updateCounterDisplay();
+                setCounterLog(`➖ Dikurangi → ${counter}`, counter < 0 ? 'error' : '');
+            });
+
+            counterReset.addEventListener('click', function() {
+                counter = 0;
+                updateCounterDisplay();
+                setCounterLog('↺ Direset ke 0', 'info');
+            });
+
+            // ----- event: check status -----
+            checkStatusBtn.addEventListener('click', function() {
+                const hobbies = getSelectedCheckboxes(hobbyGroup);
+                const gender = getSelectedRadio(genderGroup);
+
+                let parts = [];
+                if (hobbies.length) parts.push(`Hobi: ${hobbies.join(', ')}`);
+                else parts.push('Hobi: (tidak ada)');
+
+                if (gender) parts.push(`Gender: ${gender}`);
+                else parts.push('Gender: (tidak dipilih)');
+
+                setOutput(checkOutput, '✅ ' + parts.join(' | '), 'success');
+                if (!hobbies.length && !gender) {
+                    setOutput(checkOutput, '⚠️ Belum ada pilihan yang dipilih.', 'error');
+                }
+            });
+
+            // ----- event: API simulasi -----
+            apiCallBtn.addEventListener('click', function() {
+                // disable tombol
+                apiCallBtn.disabled = true;
+                apiCallBtn.textContent = '⏳ Memuat...';
+                apiDot.className = 'dot loading';
+                apiStatusText.textContent = 'Memuat...';
+                setOutput(apiOutput, '⏳ Menunggu respons dari server palsu...', 'info');
+
+                // simulasi delay
+                const delay = 1500 + Math.random() * 800;
+                setTimeout(function() {
+                    const success = Math.random() > 0.25; // 75% sukses
+                    if (success) {
+                        const data = {
+                            status: 'success',
+                            message: 'Data berhasil diambil!',
+                            timestamp: new Date().toISOString(),
+                            random: Math.floor(Math.random() * 1000)
+                        };
+                        apiDot.className = 'dot online';
+                        apiStatusText.textContent = 'Online ✓';
+                        setOutput(apiOutput,
+                            `✅ Sukses!\n📦 ${data.message}\n🆔 ID: ${data.random}\n🕒 ${data.timestamp}`,
+                            'success');
+                    } else {
+                        apiDot.className = 'dot offline';
+                        apiStatusText.textContent = 'Gagal ✗';
+                        setOutput(apiOutput, '❌ Gagal menghubungi server. Coba lagi nanti.', 'error');
+                    }
+                    apiCallBtn.disabled = false;
+                    apiCallBtn.textContent = '🚀 Panggil API';
+                }, delay);
+            });
+
+            // ----- event: warna -----
+            applyColorBtn.addEventListener('click', function() {
+                const color = colorPicker.value;
+                document.documentElement.style.setProperty('--bg-btn', color);
+                // hitung versi hover (sedikit lebih gelap)
+                const darker = darkenColor(color, 20);
+                document.documentElement.style.setProperty('--bg-btn-hover', darker);
+                setOutput(colorOutput, `🎨 Warna diubah ke ${color}`, 'info');
+            });
+
+            resetColorBtn.addEventListener('click', function() {
+                colorPicker.value = '#3b82f6';
+                document.documentElement.style.setProperty('--bg-btn', '#3b82f6');
+                document.documentElement.style.setProperty('--bg-btn-hover', '#2563eb');
+                setOutput(colorOutput, '🎨 Warna default', 'info');
+            });
+
+            // helper darken color (sederhana)
+            function darkenColor(hex, percent) {
+                // terima hex #rrggbb
+                let r = parseInt(hex.slice(1, 3), 16);
+                let g = parseInt(hex.slice(3, 5), 16);
+                let b = parseInt(hex.slice(5, 7), 16);
+                r = Math.max(0, r - Math.round(r * percent / 100));
+                g = Math.max(0, g - Math.round(g * percent / 100));
+                b = Math.max(0, b - Math.round(b * percent / 100));
+                return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+            }
+
+            // ----- event: validasi -----
+            validateBtn.addEventListener('click', function() {
+                const email = emailInput.value.trim();
+                const age = ageInput.value.trim();
+
+                const errors = [];
+                if (!email) errors.push('Email wajib diisi.');
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Format email tidak valid.');
+
+                if (!age) errors.push('Usia wajib diisi.');
+                else {
+                    const num = Number(age);
+                    if (!Number.isInteger(num)) errors.push('Usia harus berupa angka bulat.');
+                    else if (num < 18 || num > 99) errors.push('Usia harus antara 18–99.');
+                }
+
+                if (errors.length) {
+                    setOutput(validateOutput, '❌ ' + errors.join(' | '), 'error');
+                } else {
+                    setOutput(validateOutput, `✅ Valid! Email: ${email} | Usia: ${age} tahun`, 'success');
+                }
+            });
+
+            // ----- event: tema -----
+            themeToggle.addEventListener('click', toggleTheme);
+
+            // ----- event: reset semua -----
+            resetAllBtn.addEventListener('click', resetAll);
+
+            // ----- enter key untuk input card -----
+            textInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    showInputBtn.click();
+                }
+            });
+
+            // ----- inisialisasi -----
+            loadTheme();
+            resetAll(); // set semua ke default
+            updateTimestamp();
+
+            // update timestamp setiap menit
+            setInterval(updateTimestamp, 60000);
+
+            // log awal
+            console.log('🧪 Tester Pro siap digunakan!');
+
+        })();
+    </script>
+
+</body>
+</html>
